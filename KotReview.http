@@ -1,0 +1,6 @@
+@KotReview_HostAddress = http://localhost:5097
+
+GET {{KotReview_HostAddress}}/books/
+Accept: application/json
+
+###
