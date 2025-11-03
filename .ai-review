@@ -1,12 +1,12 @@
 llm:
   provider: OPENAI
   meta:
-    model: gpt-4o-mini
+    model: openai/gpt-oss-20b:free
     max_tokens: 1500
     temperature: 0.2
   http_client:
-    api_url: https://api.openai.com/v1
-    api_token: ${OPENAI_API_KEY}   # подтянется из секретов CI/локального окружения
+    api_url: https://openrouter.ai/api/v1
+    api_token: ${OPENROUTER_API_KEY}   # подтянется из секретов CI/локального окружения
 
 vcs:
   provider: GITHUB            # или GITLAB
