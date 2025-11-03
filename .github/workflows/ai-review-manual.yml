@@ -1,0 +1,40 @@
+name: AI Review (manual)
+
+on:
+  workflow_dispatch:
+    inputs:
+      review-command:
+        type: choice
+        default: run
+        options: [run, run-inline, run-context, run-summary]
+      pull-request-number:
+        description: "PR number (например, 42)"
+        type: string
+        required: true
+
+jobs:
+  ai-review:
+    # Если у репозитория глобально стоит ограничение прав,
+    # явно выдаём права на запись в PR-комменты:
+    permissions:
+      contents: read
+      pull-requests: write
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: Nikita-Filonov/ai-review@v0.20.0
+        with:
+          review-command: ${{ inputs.review-command }}
+        env:
+          # Ключ OpenAI из секретов
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+
+          # GitHub-интеграция
+          VCS__PROVIDER: "GITHUB"
+          VCS__PIPELINE__OWNER: ${{ github.repository_owner }}
+          VCS__PIPELINE__REPO: ${{ github.event.repository.name }}
+          VCS__PIPELINE__PULL_NUMBER: ${{ inputs.pull-request-number }}
+          VCS__HTTP_CLIENT__API_URL: "https://api.github.com"
+          VCS__HTTP_CLIENT__API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
