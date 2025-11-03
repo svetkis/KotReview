@@ -1,5 +1,5 @@
 llm:
-  provider: OPENAI
+  provider: OPENROUTER
   meta:
     model: openai/gpt-oss-20b:free
     max_tokens: 1500
