@@ -8,7 +8,7 @@ on:
         default: run
         options: [run, run-inline, run-context, run-summary]
       pull-request-number:
-        description: "PR number (например, 42)"
+        description: "PR number"
         type: string
         required: true
 
@@ -23,13 +23,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # ВАЖНО: тянем всю историю, чтобы был base_sha
 
-      - uses: Nikita-Filonov/ai-review@v0.20.0
+      - uses: Nikita-Filonov/ai-review@v0.39.0
         with:
           review-command: ${{ inputs.review-command }}
         env:
           # Ключ OpenAI из секретов
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          
+          LLM__PROVIDER: "OPENROUTER"
+          LLM__META__MODEL: "openai/gpt-oss-20b:free"
+          LLM__META__MAX_TOKENS: "1500"
+          LLM__META__TEMPERATURE: "0.2"
+          LLM__HTTP_CLIENT__API_URL: "https://openrouter.ai/api/v1"
+          LLM__HTTP_CLIENT__API_TOKEN: ${{ secrets.OPENROUTER_API_KEY }}
+
 
           # GitHub-интеграция
           VCS__PROVIDER: "GITHUB"
