@@ -9,7 +9,7 @@ llm:
     api_token: ${OPENROUTER_API_KEY}   # подтянется из секретов CI/локального окружения
 
 vcs:
-  provider: GITHUB            # или GITLAB
+  provider: GITHUB
 
 review:
   mode: ONLY_ADDED_WITH_CONTEXT
