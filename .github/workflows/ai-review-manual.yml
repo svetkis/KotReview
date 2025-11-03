@@ -8,7 +8,7 @@ on:
         default: run
         options: [run, run-inline, run-context, run-summary]
       pull-request-number:
-        description: "PR number (например, 42)"
+        description: "PR number"
         type: string
         required: true
 
@@ -23,6 +23,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # ВАЖНО: тянем всю историю, чтобы был base_sha
 
       - uses: Nikita-Filonov/ai-review@v0.39.0
         with:
